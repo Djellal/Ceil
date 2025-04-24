@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+
+{% block title %}Application Settings{% endblock %}
+
+{% block extra_css %}
+<style>
+    .settings-card {
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    .settings-header {
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        padding: 1.5rem;
+    }
+    .settings-section {
+        border-left: 4px solid #0d6efd;
+        background-color: rgba(13, 110, 253, 0.05);
+        padding: 15px;
+        border-radius: 0 8px 8px 0;
+        margin-bottom: 1.5rem;
+    }
+    .settings-section h5 {
+        color: #0d6efd;
+        font-weight: 600;
+    }
+    .form-label {
+        font-weight: 500;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .btn-save {
+        padding: 10px 25px;
+        font-weight: 500;
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+    }
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .social-input {
+        padding-left: 40px;
+    }
+    .social-icon {
+        position: absolute;
+        left: 25px;
+        top: 38px;
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% if messages %}
+    <div class="row mb-4">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card settings-card">
+        <div class="card-header settings-header text-white">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-gear-fill me-3" style="font-size: 2rem;"></i>
+                <div>
+                    <h3 class="mb-0">Application Settings</h3>
+                    <p class="mb-0 opacity-75">Configure your application preferences</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="settings-section">
+                    <h5 class="mb-3"><i class="bi bi-building me-2"></i>Organization Information</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.organization_name.id_for_label }}" class="form-label">
+                                Organization Name
+                            </label>
+                            {{ form.organization_name.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-building"></i></span>
+                                <input type="text" name="{{ form.organization_name.name }}" 
+                                       value="{{ form.organization_name.value|default:'' }}"
+                                       class="form-control" id="{{ form.organization_name.id_for_label }}" 
+                                       placeholder="Enter organization name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.organization_logo.id_for_label }}" class="form-label">
+                                Logo Path
+                            </label>
+                            {{ form.organization_logo.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-image"></i></span>
+                                <input type="text" name="{{ form.organization_logo.name }}" 
+                                       value="{{ form.organization_logo.value|default:'' }}"
+                                       class="form-control" id="{{ form.organization_logo.id_for_label }}"
+                                       placeholder="Path to logo image">
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="{{ form.address.id_for_label }}" class="form-label">
+                                Address
+                            </label>
+                            {{ form.address.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <textarea name="{{ form.address.name }}" 
+                                          class="form-control" id="{{ form.address.id_for_label }}" 
+                                          rows="3" placeholder="Enter organization address">{{ form.address.value|default:'' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h5 class="mb-3"><i class="bi bi-telephone me-2"></i>Contact Information</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.tel.id_for_label }}" class="form-label">
+                                Telephone
+                            </label>
+                            {{ form.tel.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="text" name="{{ form.tel.name }}" 
+                                       value="{{ form.tel.value|default:'' }}"
+                                       class="form-control" id="{{ form.tel.id_for_label }}"
+                                       placeholder="Enter telephone number">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                Email
+                            </label>
+                            {{ form.email.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" name="{{ form.email.name }}" 
+                                       value="{{ form.email.value|default:'' }}"
+                                       class="form-control" id="{{ form.email.id_for_label }}"
+                                       placeholder="Enter email address">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.website.id_for_label }}" class="form-label">
+                                Website
+                            </label>
+                            {{ form.website.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-globe"></i></span>
+                                <input type="url" name="{{ form.website.name }}" 
+                                       value="{{ form.website.value|default:'' }}"
+                                       class="form-control" id="{{ form.website.id_for_label }}"
+                                       placeholder="Enter website URL">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h5 class="mb-3"><i class="bi bi-share me-2"></i>Social Media</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.facebook.id_for_label }}" class="form-label">
+                                Facebook
+                            </label>
+                            {{ form.facebook.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+                                <input type="url" name="{{ form.facebook.name }}" 
+                                       value="{{ form.facebook.value|default:'' }}"
+                                       class="form-control" id="{{ form.facebook.id_for_label }}"
+                                       placeholder="Facebook profile URL">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.twitter.id_for_label }}" class="form-label">
+                                Twitter
+                            </label>
+                            {{ form.twitter.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-twitter"></i></span>
+                                <input type="url" name="{{ form.twitter.name }}" 
+                                       value="{{ form.twitter.value|default:'' }}"
+                                       class="form-control" id="{{ form.twitter.id_for_label }}"
+                                       placeholder="Twitter profile URL">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.linkedin.id_for_label }}" class="form-label">
+                                LinkedIn
+                            </label>
+                            {{ form.linkedin.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+                                <input type="url" name="{{ form.linkedin.name }}" 
+                                       value="{{ form.linkedin.value|default:'' }}"
+                                       class="form-control" id="{{ form.linkedin.id_for_label }}"
+                                       placeholder="LinkedIn profile URL">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.youtube.id_for_label }}" class="form-label">
+                                YouTube
+                            </label>
+                            {{ form.youtube.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-youtube"></i></span>
+                                <input type="url" name="{{ form.youtube.name }}" 
+                                       value="{{ form.youtube.value|default:'' }}"
+                                       class="form-control" id="{{ form.youtube.id_for_label }}"
+                                       placeholder="YouTube channel URL">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h5 class="mb-3"><i class="bi bi-gear me-2"></i>System Settings</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.current_session.id_for_label }}" class="form-label">
+                                Current Session
+                            </label>
+                            {{ form.current_session.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                                {{ form.current_session }}
+                            </div>
+                            <div class="form-text">Select the active session for the application</div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-check form-switch mt-4 p-0">
+                                <div class="card border-0 bg-light p-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check form-switch mb-0">
+                                            <input class="form-check-input" type="checkbox" 
+                                                   name="{{ form.registration_opened.name }}" 
+                                                   id="{{ form.registration_opened.id_for_label }}"
+                                                   {% if form.registration_opened.value %}checked{% endif %}
+                                                   style="width: 3em; height: 1.5em;">
+                                            <label class="form-check-label ms-2" for="{{ form.registration_opened.id_for_label }}">
+                                                Registration Opened
+                                            </label>
+                                        </div>
+                                        <i class="bi {% if form.registration_opened.value %}bi-unlock-fill text-success{% else %}bi-lock-fill text-danger{% endif %} ms-auto" style="font-size: 1.5rem;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label for="{{ form.terms_and_conditions.id_for_label }}" class="form-label">
+                                Terms and Conditions
+                            </label>
+                            {{ form.terms_and_conditions.errors }}
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-file-text"></i></span>
+                                <textarea name="{{ form.terms_and_conditions.name }}" 
+                                          class="form-control" id="{{ form.terms_and_conditions.id_for_label }}" 
+                                          rows="5" placeholder="Enter terms and conditions">{{ form.terms_and_conditions.value|default:'' }}</textarea>
+                            </div>
+                            <div class="form-text">These terms will be displayed during user registration</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Back to Home
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-save">
+                        <i class="bi bi-save me-2"></i>Save Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
