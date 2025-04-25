@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}{{ state.name }} - Details{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% if messages %}
+    <div class="row mb-4">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <!-- State Details -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>State Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5>Name</h5>
+                        <p class="border-bottom pb-2">{{ state.name }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5>Arabic Name</h5>
+                        <p class="border-bottom pb-2" dir="rtl">{{ state.name_ar }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5>Municipalities</h5>
+                        <p class="border-bottom pb-2">{{ municipalities.count }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'state_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Back
+                        </a>
+                        <div>
+                            <a href="{% url 'state_update' state.id %}" class="btn btn-warning text-white">
+                                <i class="bi bi-pencil me-1"></i>Edit
+                            </a>
+                            <a href="{% url 'state_delete' state.id %}" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Municipalities -->
+        <div class="col-md-8 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="bi bi-buildings-fill me-2"></i>Municipalities</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Add Municipality Form -->
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">Add New Municipality</h5>
+                        <form method="post" class="row g-3">
+                            {% csrf_token %}
+                            {{ form.state }}
+                            
+                            <div class="col-md-6">
+                                <label for="{{ form.name.id_for_label }}" class="form-label">Municipality Name</label>
+                                {{ form.name.errors }}
+                                {{ form.name }}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="{{ form.name_ar.id_for_label }}" class="form-label">Arabic Municipality Name</label>
+                                {{ form.name_ar.errors }}
+                                {{ form.name_ar }}
+                            </div>
+                            
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-plus-circle me-1"></i>Add Municipality
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Municipalities List -->
+                    <h5 class="border-bottom pb-2">Existing Municipalities</h5>
+                    {% if municipalities %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Arabic Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for municipality in municipalities %}
+                                <tr>
+                                    <td>{{ municipality.id }}</td>
+                                    <td>{{ municipality.name }}</td>
+                                    <td dir="rtl">{{ municipality.name_ar }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'municipality_update' state.id municipality.id %}" class="btn btn-sm btn-warning text-white">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="{% url 'municipality_delete' state.id municipality.id %}" class="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>No municipalities found for this state. Add one using the form above.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

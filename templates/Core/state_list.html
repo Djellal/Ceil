@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}States{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% if messages %}
+    <div class="row mb-4">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>States</h4>
+            <a href="{% url 'state_create' %}" class="btn btn-light">
+                <i class="bi bi-plus-circle me-1"></i>Add State
+            </a>
+        </div>
+        <div class="card-body">
+            {% if states %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Arabic Name</th>
+                            <th>Municipalities</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for state in states %}
+                        <tr>
+                            <td>{{ state.id }}</td>
+                            <td>{{ state.name }}</td>
+                            <td dir="rtl">{{ state.name_ar }}</td>
+                            <td>{{ state.municipalities.count }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'state_detail' state.id %}" class="btn btn-sm btn-info text-white">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'state_update' state.id %}" class="btn btn-sm btn-warning text-white">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'state_delete' state.id %}" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>No states found. Click "Add State" to create one.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

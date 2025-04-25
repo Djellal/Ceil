@@ -29,7 +29,12 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="/">CeilUfas</a>
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                {% if app_settings.organization_logo %}
+                <img src="{{ app_settings.organization_logo.url }}" alt="{{ app_settings.organization_name }}" height="40" class="me-2">
+                {% endif %}
+                {{ app_settings.organization_name|default:"CeilUfas" }}
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -52,6 +57,25 @@
                             <li>
                                 <a class="dropdown-item" href="{% url 'app_settings_edit' %}">
                                     <i class="bi bi-gear"></i> Settings
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="{% url 'state_list' %}">
+                                    <i class="bi bi-geo-alt"></i> States & Municipalities
+                                </a>
+                            </li>
+                            <li >
+                                <a class="dropdown-item" href="{% url 'profession_list' %}">
+                                    <i class="bi bi-briefcase"></i> Professions
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a class="dropdown-item" href="{% url 'course_list' %}">
+                                    <i class="bi bi-book"></i> Courses
+                                </a>
+                                <a class="dropdown-item" href="{% url 'course_type_list' %}">
+                                    <i class="bi bi-list-check"></i> Course Types
                                 </a>
                             </li>
                         </ul>

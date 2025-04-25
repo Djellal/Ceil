@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Home - {{ app_settings.organization_name|default:"CeilUfas" }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Welcome to {{ app_settings.organization_name|default:"CeilUfas" }}</h1>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title">About Us</h5>
+                    <p class="card-text">
+                        Welcome to our application. This is the home page of your CeilUfas application.
+                        You can customize this content in the home.html template.
+                    </p>
+                </div>
+            </div>
+            
+            {% if app_settings.current_session %}
+            <div class="alert alert-info">
+                <h5>Current Session: {{ app_settings.current_session.name }}</h5>
+                <p>
+                    Start Date: {{ app_settings.current_session.start_date|date:"F d, Y" }}<br>
+                    End Date: {{ app_settings.current_session.end_date|date:"F d, Y" }}
+                </p>
+                
+                {% if app_settings.registration_opened %}
+                <a href="#" class="btn btn-primary">Register Now</a>
+                {% else %}
+                <p class="text-muted">Registration is currently closed.</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
