@@ -334,3 +334,18 @@ def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
     
     return render(request, 'Core/course_detail.html', {'course': course})
+
+
+def about_view(request):
+    """
+    View for the about page
+    """
+    settings = AppSettings.get_settings()
+    return render(request, 'Core/about.html', {'app_settings': settings})
+
+def contact_view(request):
+    """
+    View for the contact page
+    """
+    settings = AppSettings.get_settings()
+    return render(request, 'Core/contact.html', {'app_settings': settings})

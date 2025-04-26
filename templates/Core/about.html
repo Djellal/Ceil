@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold text-primary mb-4">About {{ app_settings.organization_name }}</h1>
+            <p class="lead text-muted mb-4">
+                We are dedicated to providing high-quality education and training programs to help individuals develop their skills and advance their careers.
+            </p>
+            {% if app_settings.organization_logo %}
+            <img src="{{ app_settings.organization_logo.url }}" alt="{{ app_settings.organization_name }}" class="img-fluid rounded shadow-sm mb-4" style="max-height: 200px;">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary p-3 rounded-circle text-white me-3">
+                            <i class="bi bi-bullseye fs-4"></i>
+                        </div>
+                        <h3 class="card-title mb-0">Our Mission</h3>
+                    </div>
+                    <p class="card-text">
+                        To provide accessible, high-quality education and training that empowers individuals to achieve their professional goals and contribute to their communities.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-primary p-3 rounded-circle text-white me-3">
+                            <i class="bi bi-eye fs-4"></i>
+                        </div>
+                        <h3 class="card-title mb-0">Our Vision</h3>
+                    </div>
+                    <p class="card-text">
+                        To be a leading educational institution recognized for excellence in teaching, innovation, and community engagement, preparing students for success in a rapidly changing world.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Values -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Our Core Values</h2>
+            <p class="text-muted">The principles that guide everything we do</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-light p-3 rounded-circle mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-mortarboard-fill text-primary fs-1"></i>
+                    </div>
+                    <h4 class="card-title">Excellence</h4>
+                    <p class="card-text">
+                        We strive for excellence in all aspects of education and training, maintaining high standards and continuously improving our programs.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-light p-3 rounded-circle mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-people-fill text-primary fs-1"></i>
+                    </div>
+                    <h4 class="card-title">Inclusivity</h4>
+                    <p class="card-text">
+                        We embrace diversity and create an inclusive environment where all students feel welcome, respected, and supported in their learning journey.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-light p-3 rounded-circle mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-lightbulb-fill text-primary fs-1"></i>
+                    </div>
+                    <h4 class="card-title">Innovation</h4>
+                    <p class="card-text">
+                        We foster innovation in teaching and learning, adapting to new technologies and methodologies to enhance the educational experience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History -->
+    <div class="row mb-5">
+        <div class="col-lg-10 mx-auto">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    <h2 class="card-title fw-bold mb-4">Our History</h2>
+                    <div class="timeline">
+                        <div class="row g-0 mb-4">
+                            <div class="col-md-2 text-center">
+                                <div class="bg-primary text-white rounded-circle p-3 d-inline-block">
+                                    <span class="fw-bold">2010</span>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <h5 class="mb-2">Foundation</h5>
+                                <p class="text-muted">
+                                    {{ app_settings.organization_name }} was established with a vision to provide quality education and training to students.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-0 mb-4">
+                            <div class="col-md-2 text-center">
+                                <div class="bg-primary text-white rounded-circle p-3 d-inline-block">
+                                    <span class="fw-bold">2015</span>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <h5 class="mb-2">Expansion</h5>
+                                <p class="text-muted">
+                                    We expanded our course offerings and facilities to accommodate more students and diverse educational needs.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-md-2 text-center">
+                                <div class="bg-primary text-white rounded-circle p-3 d-inline-block">
+                                    <span class="fw-bold">2020</span>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <h5 class="mb-2">Digital Transformation</h5>
+                                <p class="text-muted">
+                                    We embraced digital technologies to enhance our educational offerings and reach more students through online learning platforms.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Our Leadership Team</h2>
+            <p class="text-muted">Meet the people who make it all happen</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 150px; height: 150px;">
+                        <img src="https://via.placeholder.com/150" alt="Director" class="img-fluid">
+                    </div>
+                    <h4 class="card-title">Dr. Ahmed Benali</h4>
+                    <p class="text-muted">Director</p>
+                    <p class="card-text">
+                        With over 20 years of experience in education, Dr. Benali leads our institution with vision and dedication.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 150px; height: 150px;">
+                        <img src="https://via.placeholder.com/150" alt="Academic Director" class="img-fluid">
+                    </div>
+                    <h4 class="card-title">Prof. Samira Hadj</h4>
+                    <p class="text-muted">Academic Director</p>
+                    <p class="card-text">
+                        Prof. Hadj oversees our academic programs, ensuring high standards and innovative teaching methods.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle overflow-hidden mx-auto mb-3" style="width: 150px; height: 150px;">
+                        <img src="https://via.placeholder.com/150" alt="Administrative Director" class="img-fluid">
+                    </div>
+                    <h4 class="card-title">Mr. Karim Mesbah</h4>
+                    <p class="text-muted">Administrative Director</p>
+                    <p class="card-text">
+                        Mr. Mesbah manages our administrative operations, ensuring smooth functioning of all departments.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact CTA -->
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card bg-primary text-white border-0 shadow">
+                <div class="card-body p-5 text-center">
+                    <h2 class="card-title fw-bold mb-3">Get in Touch</h2>
+                    <p class="card-text mb-4">
+                        Have questions about our programs or want to learn more about {{ app_settings.organization_name }}? We'd love to hear from you!
+                    </p>
+                    <a href="{% url 'contact' %}" class="btn btn-light btn-lg px-4">
+                        <i class="bi bi-envelope me-2"></i>Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

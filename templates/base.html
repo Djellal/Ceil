@@ -16,12 +16,80 @@
         body {
             display: flex;
             flex-direction: column;
+            background-color: #f8f9fa;
         }
         main {
             flex: 1 0 auto;
+            padding: 2rem 0;
         }
         footer {
             flex-shrink: 0;
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        .navbar-brand img {
+            max-height: 40px;
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+        .nav-link {
+            position: relative;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: rgba(255,255,255,0.9) !important;
+        }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: rgba(255,255,255,0.7);
+            border-radius: 3px 3px 0 0;
+        }
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+        }
+        .dropdown-item {
+            padding: 0.5rem 1.5rem;
+            transition: all 0.2s ease;
+        }
+        .dropdown-item:hover {
+            background-color: #f1f5ff;
+            transform: translateX(5px);
+        }
+        .dropdown-item i {
+            margin-right: 0.5rem;
+            color: #0d6efd;
+        }
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            border-radius: 0.5rem;
+            padding: 0.5rem 1.25rem;
+        }
+        .btn-primary {
+            box-shadow: 0 0.125rem 0.25rem rgba(13, 110, 253, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0.25rem 0.5rem rgba(13, 110, 253, 0.4);
         }
     </style>
 </head>
@@ -31,9 +99,9 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
                 {% if app_settings.organization_logo %}
-                <img src="{{ app_settings.organization_logo.url }}" alt="{{ app_settings.organization_name }}" height="40" class="me-2">
+                <img src="{{ app_settings.organization_logo.url }}" alt="{{ app_settings.organization_name }}" class="me-2">
                 {% endif %}
-                {{ app_settings.organization_name|default:"CeilUfas" }}
+                <span class="fw-bold">{{ app_settings.organization_name|default:"CeilUfas" }}</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -41,41 +109,59 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Home</a>
+                        <a class="nav-link active" href="/">
+                            <i class="bi bi-house-door-fill me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">
+                            <i class="bi bi-info-circle me-1"></i>About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">
+                            <i class="bi bi-envelope me-1"></i>Contact
+                        </a>
                     </li>
                     {% if user.is_authenticated and 'Admin' in user.groups.all|stringformat:'s' %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-shield-lock"></i> Admin
+                            <i class="bi bi-gear-fill me-1"></i>Administration
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{% url 'session_list' %}">
-                                    <i class="bi bi-calendar-event"></i> Sessions
-                                </a>
-                            </li>
+                        <ul class="dropdown-menu dropdown-menu-end animate slideIn">
+                            <li class="dropdown-header">System Management</li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'app_settings_edit' %}">
-                                    <i class="bi bi-gear"></i> Settings
+                                    <i class="bi bi-sliders"></i>Application Settings
                                 </a>
                             </li>
-
+                            <li>
+                                <a class="dropdown-item" href="{% url 'session_list' %}">
+                                    <i class="bi bi-calendar-week"></i>Academic Sessions
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropdown-header">Data Management</li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'state_list' %}">
-                                    <i class="bi bi-geo-alt"></i> States & Municipalities
+                                    <i class="bi bi-geo-alt-fill"></i>States & Municipalities
                                 </a>
                             </li>
-                            <li >
+                            <li>
                                 <a class="dropdown-item" href="{% url 'profession_list' %}">
-                                    <i class="bi bi-briefcase"></i> Professions
+                                    <i class="bi bi-briefcase-fill"></i>Professions
                                 </a>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item" href="{% url 'course_list' %}">
-                                    <i class="bi bi-book"></i> Courses
-                                </a>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="dropdown-header">Course Management</li>
+                            <li>
                                 <a class="dropdown-item" href="{% url 'course_type_list' %}">
-                                    <i class="bi bi-list-check"></i> Course Types
+                                    <i class="bi bi-tags-fill"></i>Course Types
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'course_list' %}">
+                                    <i class="bi bi-book-fill"></i>Courses
                                 </a>
                             </li>
                         </ul>
@@ -84,18 +170,42 @@
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <form action="{% url 'logout' %}" method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-link nav-link">Logout</button>
-                        </form>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i>My Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-person"></i>Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-gear"></i>Settings
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-box-arrow-right"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-link" href="{% url 'register' %}">
+                            <i class="bi bi-person-plus me-1"></i>Register
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
@@ -104,19 +214,81 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container my-4">
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-3">
-        <div class="container text-center">
-            <p class="mb-0">&copy; {% now "Y" %} CeilUfas. All rights reserved.</p>
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3">{{ app_settings.organization_name|default:"CeilUfas" }}</h5>
+                    <p class="mb-0 text-muted">{{ app_settings.address|default:"" }}</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3">Contact</h5>
+                    {% if app_settings.tel %}
+                    <p class="mb-1"><i class="bi bi-telephone me-2"></i>{{ app_settings.tel }}</p>
+                    {% endif %}
+                    {% if app_settings.email %}
+                    <p class="mb-1"><i class="bi bi-envelope me-2"></i>{{ app_settings.email }}</p>
+                    {% endif %}
+                    {% if app_settings.website %}
+                    <p class="mb-0"><i class="bi bi-globe me-2"></i>{{ app_settings.website }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Follow Us</h5>
+                    <div class="d-flex">
+                        {% if app_settings.facebook %}
+                        <a href="{{ app_settings.facebook }}" class="text-white me-3" target="_blank">
+                            <i class="bi bi-facebook fs-4"></i>
+                        </a>
+                        {% endif %}
+                        {% if app_settings.twitter %}
+                        <a href="{{ app_settings.twitter }}" class="text-white me-3" target="_blank">
+                            <i class="bi bi-twitter-x fs-4"></i>
+                        </a>
+                        {% endif %}
+                        {% if app_settings.linkedin %}
+                        <a href="{{ app_settings.linkedin }}" class="text-white me-3" target="_blank">
+                            <i class="bi bi-linkedin fs-4"></i>
+                        </a>
+                        {% endif %}
+                        {% if app_settings.youtube %}
+                        <a href="{{ app_settings.youtube }}" class="text-white" target="_blank">
+                            <i class="bi bi-youtube fs-4"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3 bg-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; {% now "Y" %} {{ app_settings.organization_name|default:"CeilUfas" }}. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
+    <script>
+        // Add active class to current nav item
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPath) {
+                    link.classList.add('active');
+                } else if (link.classList.contains('active') && href !== '/') {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
