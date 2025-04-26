@@ -1,5 +1,5 @@
 from django import forms
-from .models import Session, AppSettings, State, Municipality, Profession, CourseType, Course
+from .models import Session, AppSettings, State, Municipality, Profession, CourseType, Course, CourseLevel
 
 class SessionForm(forms.ModelForm):
     class Meta:
@@ -69,3 +69,23 @@ class CourseForm(forms.ModelForm):
             'course_type': forms.Select(attrs={'class': 'form-select'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+
+class CourseLevelForm(forms.ModelForm):
+    class Meta:
+        model = CourseLevel
+        fields = ['name', 'name_ar', 'duration', 'next_level']
+        widgets = {
+            'next_level': forms.Select(attrs={'class': 'form-select'}),
+        }
+    
+    def __init__(self, *args, course=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.course = course
+        
+        # Only show levels from the same course as options for next_level
+        if course:
+            self.fields['next_level'].queryset = CourseLevel.objects.filter(course=course)
+            
+            # Exclude self from next_level options if this is an existing level
+            if self.instance.pk:
+                self.fields['next_level'].queryset = self.fields['next_level'].queryset.exclude(pk=self.instance.pk)

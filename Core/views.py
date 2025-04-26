@@ -7,6 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
+from .models import Course, CourseLevel
+from .forms import CourseForm, CourseLevelForm
 
 def is_admin(user):
     return user.is_authenticated and user.groups.filter(name='Admin').exists()
@@ -332,8 +335,57 @@ def course_delete(request, pk):
 @user_passes_test(is_admin)
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
+    levels = course.levels.all().order_by('id')
     
-    return render(request, 'Core/course_detail.html', {'course': course})
+    # Handle level form submission
+    if request.method == 'POST':
+        # Check if we're adding/editing a level
+        if 'level_id' in request.POST:
+            # Edit existing level
+            level_id = request.POST.get('level_id')
+            level = get_object_or_404(CourseLevel, pk=level_id, course=course)
+            level_form = CourseLevelForm(request.POST, instance=level, course=course)
+            if level_form.is_valid():
+                level_form.save()
+                messages.success(request, _("Course level updated successfully."))
+                return redirect('course_detail', pk=course.pk)
+        else:
+            # Add new level
+            level_form = CourseLevelForm(request.POST, course=course)
+            if level_form.is_valid():
+                level = level_form.save(commit=False)
+                level.course = course
+                level.save()
+                messages.success(request, _("Course level added successfully."))
+                return redirect('course_detail', pk=course.pk)
+    else:
+        level_form = CourseLevelForm(course=course)
+    
+    # For editing a level
+    edit_level_id = request.GET.get('edit_level')
+    if edit_level_id:
+        edit_level = get_object_or_404(CourseLevel, pk=edit_level_id, course=course)
+        level_form = CourseLevelForm(instance=edit_level, course=course)
+    
+    # For deleting a level
+    delete_level_id = request.GET.get('delete_level')
+    if delete_level_id and request.method == 'GET':
+        delete_level = get_object_or_404(CourseLevel, pk=delete_level_id, course=course)
+        # Check if this level is referenced by other levels
+        if CourseLevel.objects.filter(next_level=delete_level).exists():
+            messages.error(request, _("Cannot delete this level as it is referenced by other levels."))
+        else:
+            delete_level.delete()
+            messages.success(request, _("Course level deleted successfully."))
+            return redirect('course_detail', pk=course.pk)
+    
+    context = {
+        'course': course,
+        'levels': levels,
+        'level_form': level_form,
+        'edit_level_id': edit_level_id,
+    }
+    return render(request, 'Core/course_detail.html', context)
 
 
 def about_view(request):

@@ -294,3 +294,44 @@ class Course(models.Model):
     class Meta:
         verbose_name = _("Course")
         verbose_name_plural = _("Courses")
+
+
+class CourseLevel(models.Model):
+    name = models.CharField(
+        max_length=300,
+        null=False,
+        blank=False,
+        verbose_name=_("Level Name")
+    )
+    name_ar = models.CharField(
+        max_length=300,
+        null=False,
+        blank=False,
+        verbose_name=_("Arabic Level Name")
+    )
+    duration = models.IntegerField(
+        null=False,
+        blank=False,
+        verbose_name=_("Duration (hours)")
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name='levels',
+        verbose_name=_("Course")
+    )
+    next_level = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='previous_levels',
+        verbose_name=_("Next Level")
+    )
+
+    def __str__(self):
+        return f"{self.course.code} - {self.name}"
+
+    class Meta:
+        verbose_name = _("Course Level")
+        verbose_name_plural = _("Course Levels")
