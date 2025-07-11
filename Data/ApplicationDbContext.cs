@@ -1,5 +1,4 @@
 ﻿using Ceil.Models;
-using DataModel;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
